@@ -49,7 +49,6 @@ class _HomePageState extends State<HomePage> {
               setState(() {
                 conteo = 0;
               });
-              print('Hola mundo');
             }),
         Expanded(
           child: SizedBox(),
@@ -60,7 +59,6 @@ class _HomePageState extends State<HomePage> {
               setState(() {
                 conteo = conteo - 1;
               });
-              print('Hola mundo');
             }),
         SizedBox(width: 5.0),
         FloatingActionButton(
