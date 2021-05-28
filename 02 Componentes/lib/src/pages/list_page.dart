@@ -26,12 +26,12 @@ class _ListPageState extends State<ListPage> {
         fetchData();
       }
     });
+  }
 
-    @override
-    void dispose() {
-      super.dispose();
-      _scrollController.dispose();
-    }
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
   }
 
   @override

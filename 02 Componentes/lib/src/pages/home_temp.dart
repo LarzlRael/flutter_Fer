@@ -11,7 +11,7 @@ class HomePageTemp extends StatelessWidget {
     );
   }
 
-  List<Widget> _createItems() {
+  /* List<Widget> _createItems() {
     List<Widget> lista = <Widget>[];
 
     for (var opt in opciones) {
@@ -23,7 +23,7 @@ class HomePageTemp extends StatelessWidget {
       lista..add(tempWidget)..add(Divider());
     }
     return lista;
-  }
+  } */
 
   List<Widget> _crearListaCorta() {
     return opciones.map((item) {
