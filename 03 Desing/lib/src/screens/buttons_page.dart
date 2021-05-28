@@ -3,7 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-class Botonespage extends StatelessWidget {
+class ButtonsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +20,6 @@ class Botonespage extends StatelessWidget {
           )
         ],
       ),
-      bottomNavigationBar: _bottomNavigatorBar(context),
     );
   }
 
@@ -91,29 +90,6 @@ class Botonespage extends StatelessWidget {
     );
   }
 
-  _bottomNavigatorBar(BuildContext context) {
-    return Theme(
-      data: Theme.of(context).copyWith(
-        cardColor: Color.fromRGBO(55, 57, 84, 1.0),
-        primaryColor: Colors.pinkAccent,
-        textTheme: Theme.of(context).textTheme.copyWith(
-              caption: TextStyle(
-                color: Color.fromRGBO(116, 117, 152, 1.0),
-              ),
-            ),
-      ),
-      child: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: ''),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.pie_chart_outline_outlined), label: ''),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.supervised_user_circle), label: ''),
-        ],
-      ),
-    );
-  }
-
   Widget _roundedButtons() {
     return Table(
       children: [
@@ -147,7 +123,7 @@ class Botonespage extends StatelessWidget {
     String texto,
   ) {
     return BackdropFilter(
-      filter: ImageFilter.blur(sigmaX: 0.4, sigmaY: 0.2),
+      filter: ImageFilter.blur(sigmaX: 0.2, sigmaY: 0.2),
       child: Container(
         height: 180.0,
         margin: EdgeInsets.all(15.0),
