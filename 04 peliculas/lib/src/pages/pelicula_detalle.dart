@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:peliculas/provider/peliculas_provide.dart';
+import 'package:peliculas/src/modes/actores_model.dart';
 import 'package:peliculas/src/modes/pelicula_model.dart';
 
 class PeliculaDetalle extends StatelessWidget {
@@ -14,6 +16,7 @@ class PeliculaDetalle extends StatelessWidget {
               SizedBox(height: 10.0),
               _posterTitulo(pelicula, context),
               _descripction(pelicula),
+              _crearCasting(pelicula.id, context),
             ]),
           ),
         ],
@@ -36,25 +39,29 @@ class PeliculaDetalle extends StatelessWidget {
         ),
         background: FadeInImage(
           image: NetworkImage(pelicula.getBackGroundImage()),
-          placeholder: NetworkImage(
-              'https://www.escapeauthority.com/wp-content/uploads/2116/11/No-image-found.jpg'),
-          fit: BoxFit.cover,
+          placeholder: AssetImage('assets/loading.gif'),
           fadeInDuration: Duration(microseconds: 150),
+          fit: BoxFit.cover,
         ),
       ),
     );
   }
 
-  _posterTitulo(Pelicula pelicula, BuildContext context) {
+  Widget _posterTitulo(Pelicula pelicula, BuildContext context) {
+    print('Hero animation ID  ${pelicula.uniqueId}');
+
     return Container(
         padding: EdgeInsets.symmetric(horizontal: 20.0),
         child: Row(
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(20.0),
-              child: Image(
-                image: NetworkImage(pelicula.getPosterImg()),
-                height: 150.0,
+            Hero(
+              tag: pelicula.uniqueId,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20.0),
+                child: Image(
+                  image: NetworkImage(pelicula.getPosterImg()),
+                  height: 150.0,
+                ),
               ),
             ),
             SizedBox(
@@ -93,6 +100,66 @@ class PeliculaDetalle extends StatelessWidget {
       child: Text(
         pelicula.overview,
         textAlign: TextAlign.justify,
+      ),
+    );
+  }
+
+  Widget _crearCasting(int id, BuildContext context) {
+    final peliProvider = PeliculasProvider();
+
+    return FutureBuilder(
+      future: peliProvider.getCast(id.toString()),
+      builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
+        if (snapshot.hasData) {
+          return _crearActoresPageView(snapshot.data, context);
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
+  }
+
+  Widget _crearActoresPageView(List<Actor> actores, BuildContext context) {
+    return SizedBox(
+      height: 200.0,
+      child: PageView.builder(
+        controller: PageController(viewportFraction: 0.3, initialPage: 1),
+        itemCount: actores.length,
+        itemBuilder: (context, i) {
+          return _actoresTarjeta(
+            context,
+            actores[i],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _actoresTarjeta(BuildContext context, Actor actor) {
+    return Container(
+      child: Column(
+        children: [
+          GestureDetector(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20.0),
+              child: FadeInImage(
+                placeholder: AssetImage('assets/no-image.jpg'),
+                image: NetworkImage(actor.getPhoto()),
+                height: 150.0,
+                fit: BoxFit.cover,
+              ),
+            ),
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                'actorDetalle',
+              );
+            },
+          ),
+          Text(actor.name, overflow: TextOverflow.ellipsis)
+        ],
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 /* import 'package:dio/dio.dart'; */
+import 'package:peliculas/src/modes/actores_model.dart';
 import 'package:peliculas/src/modes/pelicula_model.dart';
 import 'package:http/http.dart' as http;
 
@@ -66,5 +67,40 @@ class PeliculasProvider {
     popularesSink(_populares);
 
     return resp;
+  }
+
+  Future<List<Actor>> getCast(String peliId) async {
+    final url = Uri.https(_url, '3/movie/$peliId/credits', {
+      'api_key': _apiKey,
+      'language': _language,
+    });
+
+    final resp = await http.get(url);
+
+    final decodedData = json.decode(resp.body);
+    final cast = new Cast.fromJsonList(decodedData['cast']);
+
+    return cast.actores;
+  }
+
+  Future<List<Pelicula>> buscarPelicula(String query) async {
+    final url = Uri.https(_url, '3/search/movie', {
+      'api_key': _apiKey,
+      'language': _language,
+      'query': query,
+    });
+
+    return await _procesarRespuesta(url);
+  }
+
+//? https://api.themoviedb.org/3/person/5c9938ce9251411067f4f17b/movie_credits?api_key=7135ebe6b690f38898f6ff3f63d33ff3&language=en-US
+  Future<List<Pelicula>> actorInfo(String idActor, String idMovie) async {
+    final url = Uri.https(_url, '3/search/person/$idActor', {
+      'api_key': _apiKey,
+      'language': _language,
+      'movie_credits': idMovie,
+    });
+
+    return await _procesarRespuesta(url);
   }
 }
