@@ -94,13 +94,30 @@ class PeliculasProvider {
   }
 
 //? https://api.themoviedb.org/3/person/5c9938ce9251411067f4f17b/movie_credits?api_key=7135ebe6b690f38898f6ff3f63d33ff3&language=en-US
-  Future<List<Pelicula>> actorInfo(String idActor, String idMovie) async {
-    final url = Uri.https(_url, '3/search/person/$idActor', {
+  Future<SingleActor> getActorInfo(String idActor) async {
+    final url = Uri.https(_url, '3/person/$idActor', {
       'api_key': _apiKey,
       'language': _language,
-      'movie_credits': idMovie,
     });
 
-    return await _procesarRespuesta(url);
+    final resp = await http.get(url);
+    final decodedData = json.decode(resp.body);
+
+    return SingleActor.fromJson(decodedData);
+  }
+  /* /person/{person_id}/combined_credits */
+
+  Future<List<Pelicula>> getFilmsByActor(String personId) async {
+    final url = Uri.https(_url, '3/person/$personId/combined_credits', {
+      'api_key': _apiKey,
+      'language': _language,
+    });
+    final resp = await http.get(url);
+
+    final decodedData = json.decode(resp.body);
+
+    final peliculas = new Peliculas.fromJsonList(decodedData['cast']);
+
+    return peliculas.items;
   }
 }

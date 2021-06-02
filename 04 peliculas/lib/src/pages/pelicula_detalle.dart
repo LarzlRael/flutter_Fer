@@ -9,22 +9,24 @@ class PeliculaDetalle extends StatelessWidget {
     final Pelicula pelicula = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       body: CustomScrollView(
-        slivers: [
-          _crearAppBar(pelicula),
+        slivers: <Widget>[
+          _crearAppbar(pelicula),
           SliverList(
-            delegate: SliverChildListDelegate([
-              SizedBox(height: 10.0),
-              _posterTitulo(pelicula, context),
-              _descripction(pelicula),
-              _crearCasting(pelicula.id, context),
-            ]),
+            delegate: SliverChildListDelegate(
+              [
+                SizedBox(height: 10.0),
+                _posterTitulo(pelicula, context),
+                _description(pelicula),
+                _crearCasting(pelicula.id, context),
+              ],
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _crearAppBar(Pelicula pelicula) {
+  Widget _crearAppbar(Pelicula pelicula) {
     return SliverAppBar(
       elevation: 2.0,
       backgroundColor: Colors.indigoAccent,
@@ -40,7 +42,7 @@ class PeliculaDetalle extends StatelessWidget {
         background: FadeInImage(
           image: NetworkImage(pelicula.getBackGroundImage()),
           placeholder: AssetImage('assets/loading.gif'),
-          fadeInDuration: Duration(microseconds: 150),
+          fadeInDuration: Duration(microseconds: 1000),
           fit: BoxFit.cover,
         ),
       ),
@@ -48,8 +50,6 @@ class PeliculaDetalle extends StatelessWidget {
   }
 
   Widget _posterTitulo(Pelicula pelicula, BuildContext context) {
-    print('Hero animation ID  ${pelicula.uniqueId}');
-
     return Container(
         padding: EdgeInsets.symmetric(horizontal: 20.0),
         child: Row(
@@ -58,8 +58,9 @@ class PeliculaDetalle extends StatelessWidget {
               tag: pelicula.uniqueId,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20.0),
-                child: Image(
+                child: FadeInImage(
                   image: NetworkImage(pelicula.getPosterImg()),
+                  placeholder: AssetImage('assets/loading.gif'),
                   height: 150.0,
                 ),
               ),
@@ -72,7 +73,7 @@ class PeliculaDetalle extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  pelicula.title,
+                  '${pelicula.title}',
                   style: Theme.of(context).textTheme.headline5,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -94,7 +95,7 @@ class PeliculaDetalle extends StatelessWidget {
         ));
   }
 
-  Widget _descripction(Pelicula pelicula) {
+  Widget _description(Pelicula pelicula) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
       child: Text(
@@ -138,23 +139,29 @@ class PeliculaDetalle extends StatelessWidget {
   }
 
   Widget _actoresTarjeta(BuildContext context, Actor actor) {
+    final ScreenArguments screenArguments =
+        ScreenArguments(actor.id.toString(), actor.name);
     return Container(
       child: Column(
         children: [
           GestureDetector(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20.0),
-              child: FadeInImage(
-                placeholder: AssetImage('assets/no-image.jpg'),
-                image: NetworkImage(actor.getPhoto()),
-                height: 150.0,
-                fit: BoxFit.cover,
+              child: Hero(
+                tag: actor.id,
+                child: FadeInImage(
+                  placeholder: AssetImage('assets/no-image.jpg'),
+                  image: NetworkImage(actor.getPhoto()),
+                  height: 150.0,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             onTap: () {
               Navigator.pushNamed(
                 context,
                 'actorDetalle',
+                arguments: screenArguments,
               );
             },
           ),

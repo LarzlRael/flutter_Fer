@@ -67,7 +67,7 @@ class Actor {
 
 class SingleActor {
   bool adult;
-  List<String> alsoKnownAs;
+
   String biography;
   String birthday;
   String deathday;
@@ -83,7 +83,6 @@ class SingleActor {
 
   SingleActor({
     this.adult,
-    this.alsoKnownAs,
     this.biography,
     this.birthday,
     this.deathday,
@@ -99,8 +98,10 @@ class SingleActor {
   });
 
   SingleActor.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+
     this.adult = json['adult'];
-    this.alsoKnownAs = json['also_known_as'];
+
     this.biography = json['biography'];
     this.birthday = json['birthday'];
     this.deathday = json['deathday'];
@@ -114,4 +115,18 @@ class SingleActor {
     this.popularity = json['popularity'];
     this.profilePath = json['profile_path'];
   }
+
+  String getPhoto() {
+    if (profilePath == null) {
+      return 'https://www.escapeauthority.com/wp-content/uploads/2116/11/No-image-found.jpg';
+    }
+    return 'https://image.tmdb.org/t/p/w500/$profilePath';
+  }
+}
+
+class ScreenArguments {
+  final String idActor;
+  final String actorName;
+
+  ScreenArguments(this.idActor, this.actorName);
 }
