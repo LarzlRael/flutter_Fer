@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared/shared_prefs/preferences_usuario.dart';
+import 'package:shared/theme/theme_settings.dart';
 import 'package:shared/widgets/menu_widget.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -38,9 +39,10 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Ajustes page'),
-        backgroundColor: (prefs.colorSecundario) ? Colors.teal : Colors.blue,
+        backgroundColor: setAppBarColor(),
+        /* (prefs.colorSecundario) ? Colors.blueGrey : Colors.blue, */
       ),
-      backgroundColor: (prefs.darkTheme) ? Colors.black38 : Colors.white,
+      backgroundColor: setBackGroundColor(),
       drawer: MenuWidget(),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -58,6 +60,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
             SwitchListTile(
+              
               value: _colorSecundario,
               title: Text('Color secundario', style: styleText()),
               onChanged: (value) {
@@ -68,7 +71,8 @@ class _SettingsPageState extends State<SettingsPage> {
               },
             ),
             SwitchListTile(
-              value: _darkTheme,
+              value: prefs.darkTheme,
+              
               title: Text('Tema oscuro', style: styleText()),
               onChanged: (value) {
                 setState(() {
@@ -81,6 +85,7 @@ class _SettingsPageState extends State<SettingsPage> {
               value: 1,
               title: Text('Masculino', style: styleText()),
               groupValue: _genero,
+              
               onChanged: (value) {
                 setState(() {
                   _setSelectRadio(value);
@@ -89,6 +94,7 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             RadioListTile(
               value: 2,
+              
               title: Text('Femenino', style: styleText()),
               groupValue: _genero,
               onChanged: (value) {
@@ -98,11 +104,13 @@ class _SettingsPageState extends State<SettingsPage> {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
               child: TextField(
+                style: styleText(),
                 controller: myController,
                 decoration: InputDecoration(
                     labelStyle: styleText(),
                     hintStyle: styleText(),
                     helperStyle: styleText(),
+                    fillColor: Colors.white,
                     labelText: 'Nombre',
                     helperText: 'Nombre de la persona usando el telefono'),
                 onChanged: (value) {
@@ -113,12 +121,6 @@ class _SettingsPageState extends State<SettingsPage> {
           ],
         ),
       ),
-    );
-  }
-
-  TextStyle styleText() {
-    return TextStyle(
-      color: prefs.darkTheme ? Colors.white : Colors.black,
     );
   }
 }
