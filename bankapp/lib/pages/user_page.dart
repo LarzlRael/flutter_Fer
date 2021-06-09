@@ -1,13 +1,23 @@
+import 'package:bankapp/bloc/bloc.dart';
+import 'package:bankapp/sharedPreferences/user_preferences.dart';
 import 'package:flutter/material.dart';
 
-class UserPage extends StatelessWidget {
+class UserPage extends StatefulWidget {
+  @override
+  _UserPageState createState() => _UserPageState();
+}
+
+class _UserPageState extends State<UserPage> {
+  bool useFinger = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
           'Usuario',
-          style: TextStyle(color: Colors.deepPurpleAccent),
+          style: TextStyle(
+            color: Color(0xff734583),
+          ),
         ),
         centerTitle: false,
         backgroundColor: Colors.white,
@@ -19,13 +29,18 @@ class UserPage extends StatelessWidget {
           _createProfile(context),
           _createEnteredWithFingerPrint(),
           _creatServices(),
+          
           _logout(context),
+          SizedBox(
+            height: 10,
+          ),
         ]),
       ),
     );
   }
 
   Widget _createProfile(BuildContext context) {
+    final prefs = UserPreferences();
     final query = MediaQuery.of(context).size;
     return Row(
       children: [
@@ -42,9 +57,9 @@ class UserPage extends StatelessWidget {
           ),
         ),
         Text(
-          'Jhoe Doe'.toUpperCase(),
+          '${prefs.name}'.toUpperCase(),
           style: TextStyle(
-            color: Color(0xff01B55A),
+            color: Theme.of(context).accentColor,
             fontSize: 17,
           ),
         ),
@@ -63,15 +78,17 @@ class UserPage extends StatelessWidget {
         children: [
           Icon(
             Icons.fingerprint,
-            color: Color(0xff01B55A),
             size: 30,
           ),
           Text('Ingesar con huella'),
           Spacer(),
           Switch(
-            value: true,
-            onChanged: (value) {},
-            activeColor: Color(0xff01B55A),
+            value: useFinger,
+            onChanged: (value) {
+              setState(() {
+                useFinger = value;
+              });
+            },
           ),
         ],
       ),
@@ -112,11 +129,10 @@ class UserPage extends StatelessWidget {
             margin: EdgeInsets.only(right: 10),
             child: Icon(
               Icons.ac_unit,
-              color: Color(0xff01B55A),
               size: 35,
             ),
           ),
-          Text('consulta', style: TextStyle(color: Colors.grey)),
+          Text('consulta', style: TextStyle(color: Colors.black54)),
         ],
       ),
     );
@@ -125,7 +141,7 @@ class UserPage extends StatelessWidget {
   Widget _logout(BuildContext context) {
     return GestureDetector(
       child: Container(
-        decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
+        decoration: BoxDecoration(border: Border.all(color: Colors.black54)),
         padding: EdgeInsets.all(10),
         child: Row(
           children: [
@@ -133,7 +149,6 @@ class UserPage extends StatelessWidget {
               margin: EdgeInsets.only(right: 10),
               child: Icon(
                 Icons.lock_outline,
-                color: Color(0xff01B55A),
               ),
             ),
             Text('BloquearSesion', style: TextStyle(color: Colors.grey)),
@@ -141,11 +156,13 @@ class UserPage extends StatelessWidget {
         ),
       ),
       onTap: () {
-        Navigator.pushNamed(
+        Navigator.pushReplacementNamed(
           context,
-          '/',
+          '/home',
         );
       },
     );
   }
+
+ 
 }

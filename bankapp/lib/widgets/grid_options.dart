@@ -43,7 +43,6 @@ Widget _createCard(IconData icon, String label) {
         children: [
           Icon(
             icon,
-            color: Color(0xff01B55A),
             size: 50,
           ),
           SizedBox(

@@ -17,7 +17,7 @@ class UserPreferences {
     this._prefs = await SharedPreferences.getInstance();
   }
 
-  get genero {
+  int get genero {
     return _prefs.getInt('genero') ?? 1;
   }
 
@@ -25,7 +25,7 @@ class UserPreferences {
     _prefs.setInt('genero', value);
   }
 
-  get colorSecundario {
+  bool get colorSecundario {
     return _prefs.getBool('colorSecundario') ?? false;
   }
 
@@ -33,7 +33,7 @@ class UserPreferences {
     _prefs.setBool('colorSecundario', value);
   }
 
-  get nombreUsuario {
+  String get nombreUsuario {
     return _prefs.getString('nombreUsuario') ?? '';
   }
 
@@ -42,7 +42,7 @@ class UserPreferences {
   }
 
 // set and get last page
-  get lastPage {
+  String get lastPage {
     return _prefs.getString('lastPage') ?? 'home';
   }
 
@@ -50,7 +50,7 @@ class UserPreferences {
     _prefs.setString('lastPage', value);
   }
 
-  get darkTheme {
+  bool get darkTheme {
     return _prefs.getBool('darkTheme') ?? false;
   }
 

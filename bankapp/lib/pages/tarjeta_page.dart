@@ -1,3 +1,4 @@
+import 'package:bankapp/sharedPreferences/user_preferences.dart';
 import 'package:bankapp/widgets/app_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
@@ -8,8 +9,16 @@ class TarjetaPage extends StatelessWidget {
     final query = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: AppBarWidget(
-        label: 'xd',
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 1,
+        centerTitle: true,
+        title: Text(
+          'Productos',
+          style: TextStyle(
+            color: Color(0xff734583),
+          ),
+        ),
       ),
       body: Padding(
         padding: EdgeInsets.all(20.0),
@@ -38,7 +47,7 @@ class TarjetaPage extends StatelessWidget {
                   )
                 ],
               ),
-              _crearTableWithInfo(),
+              _crearTableWithInfo(context),
             ],
           ),
         ),
@@ -47,6 +56,8 @@ class TarjetaPage extends StatelessWidget {
   }
 
   Widget _createCreditCard(BuildContext context) {
+    UserPreferences prefs = UserPreferences();
+
     final query = MediaQuery.of(context).size;
     final TextStyle style = TextStyle(
       color: Colors.white,
@@ -87,7 +98,7 @@ class TarjetaPage extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 Text(
-                  'Bs 402.20',
+                  '${prefs.saldo} Bs.',
                   style: currentSald,
                 ),
                 SizedBox(height: 20),
@@ -109,7 +120,6 @@ class TarjetaPage extends StatelessWidget {
         SizedBox(height: 10),
         Icon(
           icon,
-          color: Color(0xff01B55A),
         ),
         SizedBox(height: 5),
         Text(
@@ -120,7 +130,7 @@ class TarjetaPage extends StatelessWidget {
     );
   }
 
-  Widget _crearTableWithInfo() {
+  Widget _crearTableWithInfo(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
@@ -134,7 +144,7 @@ class TarjetaPage extends StatelessWidget {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              color: Color(0xff01B55A),
+              color: Theme.of(context).accentColor,
             ),
           ),
           SizedBox(height: 25),

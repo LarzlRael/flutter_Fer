@@ -129,7 +129,8 @@ class LoginPage extends StatelessWidget {
                 hintText: 'ejemplo@corre.com',
                 labelText: 'Correo electronico',
                 counter: Text(snapshot.data != null ? snapshot.data : ''),
-                errorText: snapshot.error.toString()),
+                errorText:
+                    snapshot.error != null ? snapshot.error.toString() : null),
             onChanged: bloc.changeEmail,
           ),
         );
@@ -148,8 +149,9 @@ class LoginPage extends StatelessWidget {
             decoration: InputDecoration(
               icon: Icon(Icons.lock_clock_outlined, color: Colors.deepPurple),
               labelText: 'Contraseña',
-              counter: Text(snapshot.data != null ? snapshot.data : ''),
-              errorText: snapshot.error.toString(),
+              /* counter: Text(snapshot.data != null ? snapshot.data : ''), */
+              errorText:
+                  snapshot.error != null ? snapshot.error.toString() : null,
             ),
             onChanged: bloc.changePassword,
           ),

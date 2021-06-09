@@ -35,8 +35,8 @@ class _NavigatorPageState extends State<NavigatorPage> {
   _bottomNavigatorBar(BuildContext context) {
     return Theme(
       data: Theme.of(context).copyWith(
-        canvasColor: Color.fromRGBO(55, 57, 84, 1.0),
-        primaryColor: Colors.pinkAccent,
+        canvasColor: Colors.black,
+        primaryColor: Colors.red,
         textTheme: Theme.of(context).textTheme.copyWith(
               caption: TextStyle(
                 color: Color.fromRGBO(116, 117, 152, 1.0),

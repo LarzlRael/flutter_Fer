@@ -1,149 +1,137 @@
+import 'package:bankapp/bloc/bloc.dart';
+import 'package:bankapp/sharedPreferences/user_preferences.dart';
+import 'package:bankapp/widgets/buttons.dart';
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Container(
-          padding: EdgeInsets.all(20),
-          child: Column(
-            children: [
-              _createLogo(),
-              SizedBox(
-                height: 10,
-              ),
-              _createGreetings(),
-              _showAlertMessage(context),
-              Spacer(),
-              _createButtons(context),
-            ],
-          ),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          'Autenticacion',
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            _createBackGround(context),
+            Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(40),
+                  child: _login(context),
+                )
+              ],
+            )
+
+            /*
+            _createButtons() */
+          ],
         ),
       ),
     );
   }
 
-  Widget _createLogo() {
-    final TextStyle style = TextStyle(
-      fontSize: 40,
-      color: Colors.black12,
-      fontWeight: FontWeight.bold,
-    );
-    return Center(child: Text('Este el logo we', style: style));
-  }
-
-  Widget _createGreetings() {
-    final TextStyle style = TextStyle(
-      fontSize: 25,
-      color: Colors.black,
-      fontWeight: FontWeight.bold,
-    );
-    return Center(
-      child: Column(
-        children: [
-          Text('#Hola Juan', style: style),
-          Text('#Quedate en casa we', style: style),
-        ],
-      ),
-    );
-  }
-
-  Widget _createButtons(BuildContext context) {
-    final TextStyle style = TextStyle(
-      fontSize: 14,
-    );
-    return Column(
+  Widget _createBackGround(BuildContext context) {
+    final query = MediaQuery.of(context).size;
+    return Stack(
       children: [
-        SizedBox(
+        Container(
+          height: query.height * .25,
           width: double.infinity,
-          child: TextButton(
-            onPressed: () {
-              Navigator.pushNamed(
-                context,
-                'menuOptions',
-              );
-            },
-            child: Text('Utilizar Contraseña', style: style),
-            style: buttonStyle(Color(0xff01B55A)),
+          child: FadeInImage(
+            image: AssetImage('assets/backGround.jpg'),
+            fit: BoxFit.cover,
+            placeholder: AssetImage('assets/loading.gif'),
           ),
         ),
-        SizedBox(
-          width: double.infinity,
-          child: TextButton(
-            onPressed: () {},
-            child: Text('Cerrar sesion', style: style),
-            style: buttonStyle(Color(0xff734583)),
+        Container(
+          padding: EdgeInsets.all(25),
+          child: Text(
+            'Bienvenido a tu \nBanca online',
+            style: TextStyle(color: Colors.white, fontSize: 23),
           ),
-        )
+        ),
       ],
     );
   }
 
-  _showAlertMessage(BuildContext context) {
-    return Center(
-      child: ElevatedButton(
-        child: Text('Mostra Alerta'),
-        style: ElevatedButton.styleFrom(
-          primary: Colors.blue,
-          shape: StadiumBorder(),
-        ),
-        onPressed: () => _showAlert(context),
+  Widget _login(BuildContext context) {
+    final bloc = Bloc();
+    final prefs = UserPreferences();
+    return Container(
+      child: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
+            decoration: BoxDecoration(),
+            child: StreamBuilder(
+              stream: bloc.nameStream,
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                return Container(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      suffixIcon: Icon(
+                        Ionicons.eye,
+                        color: Theme.of(context).accentColor,
+                      ),
+                      labelText: 'Nombre de usuario',
+                      errorText: snapshot.error != null
+                          ? snapshot.error.toString()
+                          : null,
+                    ),
+                    onChanged: (value) {
+                      bloc.changeName(value);
+                      prefs.name = value;
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+          SizedBox(
+            height: 50,
+          ),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(10),
+                topRight: Radius.circular(10),
+              ),
+              border: Border.all(color: Theme.of(context).accentColor),
+            ),
+            width: double.infinity,
+            child: TextButton(
+              onPressed: () {},
+              style: TextButton.styleFrom(),
+              child: Text('Inciar sesion',
+                  style: TextStyle(color: Theme.of(context).accentColor)),
+            ),
+          ),
+          SizedBox(
+            height: 80,
+          ),
+          singleButton(
+            context,
+            'Soy cliente sin acceso a banca digital',
+            '/home',
+            color: Theme.of(context).accentColor,
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          singleButton(
+            context,
+            'Apertura de cuenta online',
+            '/home',
+            color: Color(0xff734583),
+          ),
+        ],
       ),
     );
-  }
-
-  void _showAlert(BuildContext context) {
-    final TextStyle textsytle = TextStyle(fontSize: 14);
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('Ingreso por Huella digital', style: textsytle),
-              Icon(Icons.fingerprint, size: 60.0, color: Color(0xff01B55A)),
-              SizedBox(
-                height: 10,
-              ),
-              Text('Este es el contendio de la caja de alerta',
-                  style: textsytle),
-            ],
-          ),
-          actions: [
-            SizedBox(
-              width: double.infinity,
-              child: TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    'menuOptions',
-                  );
-                },
-                child: Text('Utilizar contraseña'),
-                style: buttonStyle(Color(0xff734583)),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  ButtonStyle buttonStyle(Color color) {
-    return TextButton.styleFrom(
-        primary: Colors.white,
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(10),
-            topRight: Radius.circular(10),
-          ),
-        ),
-        backgroundColor: color);
   }
 }

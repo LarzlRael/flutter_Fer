@@ -36,13 +36,20 @@ class _NavigationBottomState extends State<NavigationBottom> {
   _bottomNavigatorBar(BuildContext context) {
     return Theme(
       data: Theme.of(context).copyWith(
-        canvasColor: Colors.white,
+        accentColor: Colors.pinkAccent,
         primaryColor: Colors.pinkAccent,
-        textTheme: Theme.of(context).textTheme.copyWith(
-              caption: TextStyle(
-                color: Color.fromRGBO(116, 117, 152, 1.0),
-              ),
-            ),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          selectedItemColor: Color(
+            0xff734583,
+          ),
+          unselectedIconTheme: IconThemeData(
+            size: 17,
+          ),
+          selectedIconTheme: IconThemeData(
+            size: 18,
+          ),
+          elevation: 1,
+        ),
       ),
       child: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,

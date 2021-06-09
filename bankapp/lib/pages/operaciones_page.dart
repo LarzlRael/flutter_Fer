@@ -8,7 +8,7 @@ class OperacionesPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'Productos',
-          style: TextStyle(color: Colors.deepPurpleAccent),
+          style: TextStyle(color: Color(0xff734583),),
         ),
         centerTitle: true,
         backgroundColor: Colors.white,

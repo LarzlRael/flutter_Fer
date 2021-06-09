@@ -9,7 +9,9 @@ class Pagos extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           "Pagos",
-          style: TextStyle(color: Colors.deepPurpleAccent),
+          style: TextStyle(
+            color: Color(0xff734583),
+          ),
         ),
         centerTitle: true,
         backgroundColor: Colors.white,
