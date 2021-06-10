@@ -4,7 +4,7 @@ import 'package:formvalidation/src/bloc/provider.dart';
 import 'package:formvalidation/src/providers/usuario_provider.dart';
 import 'package:formvalidation/src/utils/utils.dart';
 
-class LoginPage extends StatelessWidget {
+class RegistroPage extends StatelessWidget {
   final usuarioProvider = UsuarioProvider();
   @override
   Widget build(BuildContext context) {
@@ -98,7 +98,7 @@ class LoginPage extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  'Ingreso',
+                  'Crear Cuenta',
                   style: TextStyle(fontSize: 20.0),
                 ),
                 SizedBox(height: 60.0),
@@ -111,9 +111,8 @@ class LoginPage extends StatelessWidget {
             ),
           ),
           FlatButton(
-            child: Text('Crear una nueva cuenta'),
-            onPressed: () =>
-                Navigator.pushReplacementNamed(context, 'registro'),
+            child: Text('Ya tienes cuenta? Login'),
+            onPressed: () => Navigator.pushReplacementNamed(context, 'login'),
           ),
           SizedBox(
             height: 100.0,
@@ -171,6 +170,7 @@ class LoginPage extends StatelessWidget {
     return StreamBuilder(
       stream: bloc.formValidStream,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
+        
         return ElevatedButton(
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 10),
@@ -184,21 +184,18 @@ class LoginPage extends StatelessWidget {
             ),
             elevation: 0.0,
           ),
-          onPressed: snapshot.hasData ? () => _login(bloc, context) : null,
+          onPressed: snapshot.hasData ? () => _register(bloc, context) : null,
         );
       },
     );
   }
 
-  void _login(LoginBloc bloc, BuildContext context) async{
-    
-    Map info = await usuarioProvider.login(bloc.email, bloc.password);
+  void _register(LoginBloc bloc, BuildContext context) async {
+    Map info = await usuarioProvider.newUsuario(bloc.email, bloc.password);
 
-    
     if (info['ok']) {
       Navigator.pushReplacementNamed(context, 'home');
     } else {
-      
       mostrarAlerta(context, info['mensaje']);
     }
   }
