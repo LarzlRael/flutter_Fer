@@ -10,7 +10,7 @@ Widget singleButton(
     width: double.infinity,
     child: ElevatedButton(
       onPressed: () {
-        Navigator.pushNamed(context, navigatorName);
+        Navigator.pushReplacementNamed(context, navigatorName);
         print('nos vamos a $navigatorName');
       },
       style: buttonStyle(color),

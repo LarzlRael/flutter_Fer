@@ -1,3 +1,4 @@
+import 'package:bankapp/pages/afiliate_page.dart';
 import 'package:bankapp/pages/home_page.dart';
 import 'package:bankapp/pages/login_page.dart';
 import 'package:bankapp/sharedPreferences/user_preferences.dart';
@@ -22,10 +23,11 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/login',
+      initialRoute: '/',
       routes: {
         '/': (BuildContext context) => LoginPage(),
-        '/home': (BuildContext context) => HomePage(),
+        'afiliacion': (BuildContext context) => Afiliacion(),
+        'home': (BuildContext context) => HomePage(),
         'menuOptions': (BuildContext context) => NavigationBottom(),
       },
       theme: ThemeData(

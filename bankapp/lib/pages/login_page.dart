@@ -74,11 +74,8 @@ class LoginPage extends StatelessWidget {
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 return Container(
                   child: TextField(
+                    keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
-                      suffixIcon: Icon(
-                        Ionicons.eye,
-                        color: Theme.of(context).accentColor,
-                      ),
                       labelText: 'Nombre de usuario',
                       errorText: snapshot.error != null
                           ? snapshot.error.toString()
@@ -87,6 +84,7 @@ class LoginPage extends StatelessWidget {
                     onChanged: (value) {
                       bloc.changeName(value);
                       prefs.name = value;
+                      prefs.email = value;
                     },
                   ),
                 );
@@ -106,7 +104,9 @@ class LoginPage extends StatelessWidget {
             ),
             width: double.infinity,
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, 'home');
+              },
               style: TextButton.styleFrom(),
               child: Text('Inciar sesion',
                   style: TextStyle(color: Theme.of(context).accentColor)),
@@ -118,7 +118,7 @@ class LoginPage extends StatelessWidget {
           singleButton(
             context,
             'Soy cliente sin acceso a banca digital',
-            '/home',
+            'afiliacion',
             color: Theme.of(context).accentColor,
           ),
           SizedBox(

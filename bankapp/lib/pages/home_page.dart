@@ -1,6 +1,7 @@
+import 'package:bankapp/provider/user_provider.dart';
 import 'package:bankapp/sharedPreferences/user_preferences.dart';
+import 'package:bankapp/widgets/input_password.dart';
 import 'package:flutter/material.dart';
-import 'package:ionicons/ionicons.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -8,8 +9,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool hidePassword = true;
-  String textFieldValue = '';
+  final prefs = UserPreferences();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +36,7 @@ class _HomePageState extends State<HomePage> {
                   _createGreetings(),
                   _showAlertMessage(context),
                   Spacer(),
-                  _createPasswordField(),
+                  InputPassword(),
                   _createButtons(context),
                 ],
               ),
@@ -56,8 +57,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _createGreetings() {
-    final prefs = UserPreferences();
-
     final TextStyle style = TextStyle(
       fontSize: 25,
       color: Colors.white,
@@ -74,6 +73,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _createButtons(BuildContext context) {
+    final userProvider = UserProvider();
     final TextStyle style = TextStyle(
       fontSize: 14,
     );
@@ -85,9 +85,7 @@ class _HomePageState extends State<HomePage> {
             child: Text('Utilizar Contraseña', style: style),
             style: buttonStyle(Theme.of(context).accentColor),
             onPressed: () {
-              if (textFieldValue == '1234') {
-                Navigator.pushReplacementNamed(context, 'menuOptions');
-              }
+              _submit();
             },
           ),
         ),
@@ -173,33 +171,35 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: color);
   }
 
-  Widget _createPasswordField() {
-    return Visibility(
-      visible: true,
-      child: Container(
-        padding: EdgeInsets.only(bottom: 15, left: 15, right: 15),
-        child: TextField(
-          keyboardType: TextInputType.number,
-          maxLength: 4,
-          obscureText: hidePassword,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15.0),
-            ),
-            hintText: 'Clave',
-            suffixIcon: IconButton(
-              onPressed: () {
-                setState(() {
-                  hidePassword = hidePassword ? false : true;
-                });
-              },
-              icon: Icon(hidePassword ? Ionicons.eye_off : Ionicons.eye),
-            ),
+  void _submit() async {
+    final userProvider = UserProvider();
+    Map resp = await userProvider.login(prefs.email, prefs.password);
+    print('respuesta : ');
+    print(resp);
+    if (resp['ok']) {
+      Navigator.pushReplacementNamed(context, 'menuOptions');
+    } else {
+      print(resp);
+      showDialogError(resp['mensaje']);
+    }
+  }
+
+  void showDialogError(String label) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text('Error'),
+        content: Text(label),
+        actions: <Widget>[
+          // TextButton(
+          //   onPressed: () => Navigator.pop(context, 'Cancel'),
+          //   child: const Text('Cancel'),
+          // ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'OK'),
+            child: const Text('OK'),
           ),
-          onChanged: (value) {
-            textFieldValue = value;
-          },
-        ),
+        ],
       ),
     );
   }

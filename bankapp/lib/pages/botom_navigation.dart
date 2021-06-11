@@ -72,23 +72,23 @@ class _NavigationBottomState extends State<NavigationBottom> {
     );
   }
 
-  Widget _bottomNavigatorBar2(BuildContext context) {
-    return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      currentIndex: currentIndex,
-      onTap: (index) {
-        setState(() {
-          currentIndex = index;
-        });
-      },
-      items: [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.access_time), label: 'Operaciones'),
-        BottomNavigationBarItem(icon: Icon(Icons.payment), label: 'Pagos'),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.verified_user), label: 'usuario'),
-      ],
-    );
-  }
+  // Widget _bottomNavigatorBar2(BuildContext context) {
+  //   return BottomNavigationBar(
+  //     type: BottomNavigationBarType.fixed,
+  //     currentIndex: currentIndex,
+  //     onTap: (index) {
+  //       setState(() {
+  //         currentIndex = index;
+  //       });
+  //     },
+  //     items: [
+  //       BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
+  //       BottomNavigationBarItem(
+  //           icon: Icon(Icons.access_time), label: 'Operaciones'),
+  //       BottomNavigationBarItem(icon: Icon(Icons.payment), label: 'Pagos'),
+  //       BottomNavigationBarItem(
+  //           icon: Icon(Icons.verified_user), label: 'usuario'),
+  //     ],
+  //   );
+  // }
 }

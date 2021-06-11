@@ -1,5 +1,4 @@
 import 'package:bankapp/sharedPreferences/user_preferences.dart';
-import 'package:bankapp/widgets/app_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 
@@ -34,7 +33,7 @@ class TarjetaPage extends StatelessWidget {
                     children: [
                       _crearIcono(Ionicons.add, "Pago/Cobro QR"),
                       _crearIcono(Ionicons.card, "Transefrencias"),
-                      _crearIcono(Icons.airplane_ticket, "Extracto"),
+                      _crearIcono(Icons.airplanemode_active, "Extracto"),
                       _crearIcono(Ionicons.wallet_outline, "Extracto historico")
                     ],
                   ),

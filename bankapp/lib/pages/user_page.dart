@@ -29,7 +29,6 @@ class _UserPageState extends State<UserPage> {
           _createProfile(context),
           _createEnteredWithFingerPrint(),
           _creatServices(),
-          
           _logout(context),
           SizedBox(
             height: 10,
@@ -156,6 +155,8 @@ class _UserPageState extends State<UserPage> {
         ),
       ),
       onTap: () {
+        final prefs = UserPreferences();
+        prefs.clearUserPrerences();
         Navigator.pushReplacementNamed(
           context,
           '/home',
@@ -163,6 +164,4 @@ class _UserPageState extends State<UserPage> {
       },
     );
   }
-
- 
 }
