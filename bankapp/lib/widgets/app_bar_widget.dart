@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+part of 'widgets.dart';
 
 class AppBarWidget extends StatelessWidget {
   final String? label;

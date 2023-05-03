@@ -1,7 +1,4 @@
-import 'package:bankapp/provider/user_provider.dart';
-import 'package:bankapp/sharedPreferences/user_preferences.dart';
-import 'package:bankapp/widgets/input_password.dart';
-import 'package:flutter/material.dart';
+part of 'pages.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -10,6 +7,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final prefs = UserPreferences();
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showAlert(context);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,22 +21,26 @@ class _HomePageState extends State<HomePage> {
       body: SafeArea(
         child: Stack(
           children: [
-            Container(
+            /* Container(
               width: double.infinity,
               height: double.infinity,
               child: Image(
                 image: AssetImage('assets/backGround.jpg'),
                 fit: BoxFit.cover,
               ),
+            ), */
+            Image.asset(
+              'assets/backGround.jpg',
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: double.infinity,
             ),
             Container(
               padding: EdgeInsets.all(20),
               child: Column(
                 children: [
                   _createLogo(),
-                  SizedBox(
-                    height: 10,
-                  ),
+                  SizedBox(height: 10),
                   _createGreetings(),
                   _showAlertMessage(context),
                   Spacer(),
@@ -49,7 +57,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _createLogo() {
     final TextStyle style = TextStyle(
-      fontSize: 40,
+      fontSize: 35,
       color: Colors.white,
       fontWeight: FontWeight.bold,
     );
@@ -74,30 +82,20 @@ class _HomePageState extends State<HomePage> {
 
   Widget _createButtons(BuildContext context) {
     final userProvider = UserProvider();
-    final TextStyle style = TextStyle(
-      fontSize: 14,
-    );
+
     return Column(
       children: [
-        SizedBox(
-          width: double.infinity,
-          child: TextButton(
-            child: Text('Utilizar Contraseña', style: style),
-            style: buttonStyle(Theme.of(context).accentColor),
-            onPressed: () {
-              _submit();
-            },
-          ),
+        CurvedButton(
+          title: 'Utilizar Contraseña',
+          onPressed: _submit,
+          /* backgroundColor: Theme.of(context).colorScheme.primary, */
         ),
-        SizedBox(
-          width: double.infinity,
-          child: TextButton(
-            onPressed: () {
-              Navigator.pushReplacementNamed(context, '/');
-            },
-            child: Text('Cerrar sesion', style: style),
-            style: buttonStyle(Color(0xff734583)),
-          ),
+        CurvedButton(
+          title: 'Cerrar sesion',
+          onPressed: () {
+            context.go('/');
+          },
+          backgroundColor: Color(0xff734583),
         )
       ],
     );
@@ -105,79 +103,56 @@ class _HomePageState extends State<HomePage> {
 
   _showAlertMessage(BuildContext context) {
     return Center(
-      child: ElevatedButton(
-        child: Text('Mostra Alerta'),
-        style: ElevatedButton.styleFrom(
-          primary: Colors.blue,
-          shape: StadiumBorder(),
-        ),
+      child: FilledButton(
+        child: Text('Mostrar Alerta'),
         onPressed: () => _showAlert(context),
       ),
     );
   }
 
   void _showAlert(BuildContext context) {
-    final TextStyle textsytle = TextStyle(fontSize: 14);
+    final TextStyle textsytle = TextStyle(fontSize: 12);
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
-          ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Ingreso por Huella digital', style: textsytle),
-              Icon(Icons.fingerprint,
-                  size: 60.0, color: Theme.of(context).accentColor),
-              SizedBox(
-                height: 10,
+              Text('Ingreso por huella digital', style: textsytle),
+              SizedBox(height: 5),
+              Icon(
+                Icons.fingerprint,
+                size: 40.0,
+                color: Theme.of(context).colorScheme.primary,
               ),
+              SizedBox(height: 5),
               Text('Este es el contendio de la caja de alerta',
                   style: textsytle),
+              SizedBox(height: 5),
+              SizedBox(
+                width: double.infinity,
+                child: CurvedButton(
+                  onPressed: () {
+                    context.go('/menu_options');
+                  },
+                  title: 'Utilizar contraseña',
+                  backgroundColor: Color(0xff734583),
+                ),
+              ),
             ],
           ),
-          actions: [
-            SizedBox(
-              width: double.infinity,
-              child: TextButton(
-                onPressed: () {
-                  Navigator.pushReplacementNamed(
-                    context,
-                    'menuOptions',
-                  );
-                },
-                child: Text('Utilizar contraseña'),
-                style: buttonStyle(Color(0xff734583)),
-              ),
-            ),
-          ],
         );
       },
     );
   }
 
-  ButtonStyle buttonStyle(Color color) {
-    return TextButton.styleFrom(
-        primary: Colors.white,
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(10),
-            topRight: Radius.circular(10),
-          ),
-        ),
-        backgroundColor: color);
-  }
-
   void _submit() async {
     final userProvider = UserProvider();
     Map resp = await userProvider.login(prefs.email, prefs.password);
-    print('respuesta : ');
-    print(resp);
+
     if (resp['ok']) {
-      Navigator.pushReplacementNamed(context, 'menuOptions');
+      context.pushReplacementNamed('menu_options');
     } else {
       print(resp);
       showDialogError(resp['mensaje']);
@@ -191,10 +166,6 @@ class _HomePageState extends State<HomePage> {
         title: Text('Error'),
         content: Text(label),
         actions: <Widget>[
-          // TextButton(
-          //   onPressed: () => Navigator.pop(context, 'Cancel'),
-          //   child: const Text('Cancel'),
-          // ),
           TextButton(
             onPressed: () => Navigator.pop(context, 'OK'),
             child: const Text('OK'),

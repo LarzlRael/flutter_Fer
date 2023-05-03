@@ -1,6 +1,4 @@
-import 'package:bankapp/sharedPreferences/user_preferences.dart';
-import 'package:flutter/material.dart';
-import 'package:ionicons/ionicons.dart';
+part of 'pages.dart';
 
 class TarjetaPage extends StatelessWidget {
   @override
@@ -9,17 +7,20 @@ class TarjetaPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 1,
-        centerTitle: true,
         title: Text(
           'Productos',
           style: TextStyle(
             color: Color(0xff734583),
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.notifications_outlined),
+          )
+        ],
       ),
-      body: Padding(
+      body: Container(
         padding: EdgeInsets.all(20.0),
         child: SingleChildScrollView(
           child: Column(
@@ -37,6 +38,7 @@ class TarjetaPage extends StatelessWidget {
                       _crearIcono(Ionicons.wallet_outline, "Extracto historico")
                     ],
                   ),
+                  SizedBox(height: 10),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(25),
                     child: FadeInImage(
@@ -60,56 +62,85 @@ class TarjetaPage extends StatelessWidget {
     final query = MediaQuery.of(context).size;
     final TextStyle style = TextStyle(
       color: Colors.white,
-      fontSize: 16,
+      fontSize: 13,
     );
     final TextStyle currentSald = TextStyle(
       color: Colors.white,
       fontWeight: FontWeight.bold,
       fontSize: 20,
     );
-    return Center(
-      child: Stack(
-        children: [
-          Container(
-              height: query.height * 0.25,
-              width: query.width * 0.9,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(5),
-                child: FadeInImage(
-                  placeholder: AssetImage('assets/loading.gif'),
-                  image: AssetImage('assets/tarjeta.jpg'),
-                  fit: BoxFit.cover,
-                ),
-              )
+    return Stack(
+      children: [
+        Container(
+            height: query.height * 0.25,
+            width: query.width * 0.9,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(5),
+              child: FadeInImage(
+                placeholder: AssetImage('assets/loading.gif'),
+                image: AssetImage('assets/tarjeta.jpg'),
+                fit: BoxFit.cover,
+              ),
+            )
 
-              /* decoration: BoxDecoration(
+            /* decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                       ), */
-              ),
-          Padding(
-            padding: EdgeInsets.only(top: 50, left: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Saldo',
-                  style: style,
-                ),
-                SizedBox(height: 10),
-                Text(
-                  '${prefs.saldo} Bs.',
-                  style: currentSald,
-                ),
-                SizedBox(height: 20),
-                Text(
-                  'Caja de ahorro',
-                  style: style,
-                ),
-              ],
             ),
+        Positioned(
+          top: 5,
+          right: 0,
+          child: Row(
+            children: [
+              IconButton(
+                  padding: EdgeInsets.all(0),
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.collections_bookmark_outlined,
+                    size: 35,
+                    color: Colors.white,
+                  )),
+              IconButton(
+                padding: EdgeInsets.all(0),
+                onPressed: () {},
+                icon: Icon(
+                  Icons.refresh_outlined,
+                  size: 35,
+                  color: Colors.white,
+                ),
+              )
+            ],
           ),
-        ],
-      ),
+        ),
+        Positioned(
+          top: 90,
+          right: 0,
+          child: IconButton(
+              padding: EdgeInsets.all(0),
+              onPressed: () {},
+              color: Colors.white,
+              icon: Icon(Icons.cabin_outlined)),
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: 50, left: 15, right: 15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Saldo', style: style),
+              SizedBox(height: 10),
+              Text('Bs. ${prefs.saldo}', style: currentSald),
+              SizedBox(height: 30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Caja de ahorro', style: style),
+                  Text('163399882233', style: style),
+                ],
+              )
+            ],
+          ),
+        ),
+      ],
     );
   }
 
@@ -119,6 +150,7 @@ class TarjetaPage extends StatelessWidget {
         SizedBox(height: 10),
         Icon(
           icon,
+          color: Colors.green,
         ),
         SizedBox(height: 5),
         Text(
@@ -137,34 +169,33 @@ class TarjetaPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 25),
-          Text(
-            'Solicita de credito ahora',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).accentColor,
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Text(
+              'Solicita tu credito ahora',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.primary,
+              ),
             ),
           ),
-          SizedBox(height: 25),
           Card(
-            child: Expanded(
-              child: Table(
-                children: [
-                  TableRow(
-                    children: [
-                      _cardTipo2('Credito Consumo'),
-                      _cardTipo2('Credito vivienda'),
-                    ],
-                  ),
-                  TableRow(
-                    children: [
-                      _cardTipo2('Credito Vehiculo'),
-                      _cardTipo2('Tarjeta de Crédito'),
-                    ],
-                  ),
-                ],
-              ),
+            child: Table(
+              children: [
+                TableRow(
+                  children: [
+                    _cardTipo2('Credito Consumo'),
+                    _cardTipo2('Credito vivienda'),
+                  ],
+                ),
+                TableRow(
+                  children: [
+                    _cardTipo2('Credito Vehiculo'),
+                    _cardTipo2('Tarjeta de Crédito'),
+                  ],
+                ),
+              ],
             ),
           ),
         ],

@@ -1,6 +1,4 @@
-import 'package:bankapp/bloc/bloc.dart';
-import 'package:bankapp/sharedPreferences/user_preferences.dart';
-import 'package:flutter/material.dart';
+part of 'pages.dart';
 
 class UserPage extends StatefulWidget {
   @override
@@ -9,8 +7,11 @@ class UserPage extends StatefulWidget {
 
 class _UserPageState extends State<UserPage> {
   bool useFinger = false;
+  late bool isDarkModeEnabled;
   @override
   Widget build(BuildContext context) {
+    final themeProviderNotifier = context.watch<ThemeProviderNotifier>();
+    isDarkModeEnabled = themeProviderNotifier.isDarkModeEnabled;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -19,20 +20,48 @@ class _UserPageState extends State<UserPage> {
             color: Color(0xff734583),
           ),
         ),
-        centerTitle: false,
-        backgroundColor: Colors.white,
-        elevation: 0,
       ),
       body: Padding(
         padding: EdgeInsets.all(10),
         child: Column(children: [
           _createProfile(context),
-          _createEnteredWithFingerPrint(),
-          _creatServices(),
-          _logout(context),
-          SizedBox(
-            height: 10,
+          _customListTile(
+            Icon(Icons.fingerprint, size: 30),
+            'Ingresar con Huella',
+            () {},
+            trailing: Switch(
+              value: useFinger,
+              onChanged: (value) {
+                setState(() {
+                  useFinger = value;
+                });
+              },
+            ),
           ),
+          _customListTile(
+            Icon(Icons.color_lens, size: 30),
+            'Cambiar Tema',
+            () {
+              themeProviderNotifier.toggleTheme();
+            },
+            trailing: IconButton(
+              onPressed: () {
+                themeProviderNotifier.toggleTheme();
+              },
+              icon: Icon(
+                isDarkModeEnabled ? Icons.dark_mode : Icons.light_mode,
+              ),
+            ),
+          ),
+          _creatServices(),
+          _customListTile(
+            Icon(Icons.lock, size: 30),
+            'Cerrar sesión',
+            () {
+              context.go('/');
+            },
+          ),
+          SizedBox(height: 10),
         ]),
       ),
     );
@@ -44,21 +73,30 @@ class _UserPageState extends State<UserPage> {
     return Row(
       children: [
         Container(
-          margin: EdgeInsets.only(right: 20),
+          margin: EdgeInsets.only(bottom: 10),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            borderRadius: BorderRadius.circular(100),
+          ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(8.0),
+            borderRadius: BorderRadius.circular(100),
             child: FadeInImage(
-              width: query.width * 0.25,
-              height: query.width * 0.25,
+              width: query.width * 0.18,
+              height: query.width * 0.18,
               placeholder: AssetImage('loading.gif'),
               image: AssetImage('assets/publicidad.jpg'),
+              fit: BoxFit.cover,
             ),
           ),
         ),
+        SizedBox(width: 10),
         Text(
           '${prefs.name}'.toUpperCase(),
           style: TextStyle(
-            color: Theme.of(context).accentColor,
+            color: Theme.of(context).colorScheme.primary,
+            fontWeight: FontWeight.w300,
             fontSize: 17,
           ),
         ),
@@ -66,31 +104,31 @@ class _UserPageState extends State<UserPage> {
     );
   }
 
-  Widget _createEnteredWithFingerPrint() {
+  Widget _customListTile(
+    Widget leadingIcon,
+    String title,
+    void Function() funtion, {
+    Widget? trailing,
+  }) {
     return Container(
-      padding: EdgeInsets.only(left: 10, right: 10),
+      margin: EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey),
         borderRadius: BorderRadius.circular(10),
       ),
-      child: Row(
-        children: [
-          Icon(
-            Icons.fingerprint,
-            size: 30,
+      child: ListTile(
+          onTap: () {
+            funtion();
+          },
+          leading: leadingIcon,
+          title: Text(
+            title,
+            style: TextStyle(
+                color: Colors.grey,
+                fontSize: 14,
+                fontWeight: FontWeight.normal),
           ),
-          Text('Ingesar con huella'),
-          Spacer(),
-          Switch(
-            value: useFinger,
-            onChanged: (value) {
-              setState(() {
-                useFinger = value;
-              });
-            },
-          ),
-        ],
-      ),
+          trailing: trailing),
     );
   }
 
@@ -128,40 +166,13 @@ class _UserPageState extends State<UserPage> {
             margin: EdgeInsets.only(right: 10),
             child: Icon(
               Icons.ac_unit,
-              size: 35,
+              size: 30,
+              color: Colors.green,
             ),
           ),
-          Text('consulta', style: TextStyle(color: Colors.black54)),
+          Text('Consulta', style: TextStyle(color: Colors.grey)),
         ],
       ),
-    );
-  }
-
-  Widget _logout(BuildContext context) {
-    return GestureDetector(
-      child: Container(
-        decoration: BoxDecoration(border: Border.all(color: Colors.black54)),
-        padding: EdgeInsets.all(10),
-        child: Row(
-          children: [
-            Container(
-              margin: EdgeInsets.only(right: 10),
-              child: Icon(
-                Icons.lock_outline,
-              ),
-            ),
-            Text('BloquearSesion', style: TextStyle(color: Colors.grey)),
-          ],
-        ),
-      ),
-      onTap: () {
-        final prefs = UserPreferences();
-        prefs.clearUserPrerences();
-        Navigator.pushReplacementNamed(
-          context,
-          '/home',
-        );
-      },
     );
   }
 }

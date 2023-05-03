@@ -1,6 +1,4 @@
-import 'package:bankapp/sharedPreferences/user_preferences.dart';
-import 'package:flutter/material.dart';
-import 'package:ionicons/ionicons.dart';
+part of './widgets.dart';
 
 class InputPassword extends StatefulWidget {
   @override

@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-
-import 'package:bankapp/widgets/grid_options.dart';
+part of 'pages.dart';
 
 class Pagos extends StatelessWidget {
   @override
@@ -13,9 +11,6 @@ class Pagos extends StatelessWidget {
             color: Color(0xff734583),
           ),
         ),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0,
       ),
       body: GridOptions(),
     );

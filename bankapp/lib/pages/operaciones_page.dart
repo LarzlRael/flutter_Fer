@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:bankapp/widgets/grid_options.dart';
+part of 'pages.dart';
 
 class OperacionesPage extends StatelessWidget {
   @override
@@ -7,12 +6,17 @@ class OperacionesPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Productos',
-          style: TextStyle(color: Color(0xff734583),),
+          'Operaciones',
+          style: TextStyle(
+            color: Color(0xff734583),
+          ),
         ),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0,
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.notifications_outlined),
+          )
+        ],
       ),
       body: Container(
         /* child: Text('Hola mundo'), */

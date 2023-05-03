@@ -1,5 +1,4 @@
-import 'package:bankapp/widgets/buttons.dart';
-import 'package:flutter/material.dart';
+part of 'pages.dart';
 
 class Afiliacion extends StatefulWidget {
   @override
@@ -71,8 +70,9 @@ class _AfiliacionState extends State<Afiliacion> {
               SizedBox(
                 height: 20,
               ),
-              singleButton(context, 'Continuar', '/',
-                  color: Theme.of(context).accentColor),
+              CurvedButton(
+                title: 'Continuar', /*  color: Theme.of(context).accentColor */
+              ),
             ],
           ),
         ),

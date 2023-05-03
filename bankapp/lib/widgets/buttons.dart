@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
+part of 'widgets.dart';
 
-Widget singleButton(
+/* Widget singleButton(
   BuildContext context,
   String title,
   String navigatorName, {
@@ -31,4 +31,85 @@ ButtonStyle buttonStyle(Color color) {
     ),
     backgroundColor: color,
   );
+} */
+
+class CurvedButton extends StatelessWidget {
+  final String title;
+  /* callback */
+  final void Function()? onPressed;
+  final Color? backgroundColor;
+  const CurvedButton({
+    Key? key,
+    required this.title,
+    this.backgroundColor,
+    this.onPressed,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: FilledButton(
+        style: FilledButton.styleFrom(
+          backgroundColor:
+              backgroundColor ?? Theme.of(context).colorScheme.primary,
+          padding: EdgeInsets.symmetric(horizontal: 14.0),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
+            ),
+          ),
+        ),
+        onPressed: () {
+          onPressed!();
+        },
+        child: Text(title),
+      ),
+    );
+  }
+}
+
+class GhostCurvedButton extends StatelessWidget {
+  final String title;
+  /* callback */
+  final void Function()? onPressed;
+  final Color? backgroundColor;
+  const GhostCurvedButton({
+    Key? key,
+    required this.title,
+    this.backgroundColor,
+    this.onPressed,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: OutlinedButton(
+        style: FilledButton.styleFrom(
+          /* textStyle: TextStyle(
+            color: backgroundColor ?? Theme.of(context).colorScheme.primary,
+          ), */
+
+          side: BorderSide(
+            color: backgroundColor ?? Theme.of(context).colorScheme.primary,
+          ),
+
+          /* backgroundColor:
+              backgroundColor ?? Theme.of(context).colorScheme.primary, */
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
+            ),
+          ),
+        ),
+        onPressed: onPressed,
+        child: Text(
+          title,
+          style: TextStyle(
+              color: backgroundColor ?? Theme.of(context).colorScheme.primary),
+        ),
+      ),
+    );
+  }
 }

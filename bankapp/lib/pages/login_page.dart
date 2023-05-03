@@ -1,18 +1,15 @@
-import 'package:bankapp/bloc/bloc.dart';
-import 'package:bankapp/sharedPreferences/user_preferences.dart';
-import 'package:bankapp/widgets/buttons.dart';
-import 'package:flutter/material.dart';
-import 'package:ionicons/ionicons.dart';
+part of 'pages.dart';
 
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
         title: Text(
-          'Autenticacion',
-          style: TextStyle(color: Colors.white),
+          'Autenticación',
+          style: TextStyle(
+            color: Color(0xff734583),
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -27,7 +24,6 @@ class LoginPage extends StatelessWidget {
                 )
               ],
             )
-
             /*
             _createButtons() */
           ],
@@ -43,17 +39,20 @@ class LoginPage extends StatelessWidget {
         Container(
           height: query.height * .25,
           width: double.infinity,
-          child: FadeInImage(
-            image: AssetImage('assets/backGround.jpg'),
+          /* child: AssetImage('assets/backGround.jpg',fit: BoxFit.cover,), */
+          child: Image.asset(
+            'assets/backGround.jpg',
             fit: BoxFit.cover,
-            placeholder: AssetImage('assets/loading.gif'),
           ),
         ),
         Container(
           padding: EdgeInsets.all(25),
           child: Text(
             'Bienvenido a tu \nBanca online',
-            style: TextStyle(color: Colors.white, fontSize: 23),
+            style: Theme.of(context)
+                .textTheme
+                .headlineMedium
+                ?.copyWith(color: Colors.white),
           ),
         ),
       ],
@@ -91,44 +90,24 @@ class LoginPage extends StatelessWidget {
               },
             ),
           ),
-          SizedBox(
-            height: 50,
+          SizedBox(height: 50),
+          GhostCurvedButton(
+            title: 'Iniciar sesion',
+            backgroundColor: Colors.green,
+            onPressed: () {
+              context.push('/home');
+            },
           ),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
-              ),
-              border: Border.all(color: Theme.of(context).accentColor),
-            ),
-            width: double.infinity,
-            child: TextButton(
-              onPressed: () {
-                Navigator.pushNamed(context, 'home');
-              },
-              style: TextButton.styleFrom(),
-              child: Text('Inciar sesion',
-                  style: TextStyle(color: Theme.of(context).accentColor)),
-            ),
+          SizedBox(height: 80),
+          CurvedButton(
+            title: 'Soy cliente sin acceso a banca digital',
+            onPressed: () {},
+            backgroundColor: Theme.of(context).colorScheme.primary,
           ),
-          SizedBox(
-            height: 80,
-          ),
-          singleButton(
-            context,
-            'Soy cliente sin acceso a banca digital',
-            'afiliacion',
-            color: Theme.of(context).accentColor,
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          singleButton(
-            context,
-            'Apertura de cuenta online',
-            '/home',
-            color: Color(0xff734583),
+          SizedBox(height: 15),
+          CurvedButton(
+            title: 'Apertura de cuenta online',
+            backgroundColor: Color(0xff734583),
           ),
         ],
       ),

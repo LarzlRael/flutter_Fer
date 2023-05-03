@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+part of 'widgets.dart';
 
 class GridOptions extends StatelessWidget {
   @override
@@ -22,7 +22,7 @@ Widget _createOperationTables() {
       _createCard(Icons.transform_sharp, "Transacciones"),
       _createCard(Icons.night_shelter_outlined, "Transacciones"),
       _createCard(Icons.handyman_rounded, "Solicitudes en linea"),
-      _createCard(Icons.class__outlined, "solicitud"),
+      _createCard(Icons.class_outlined, "solicitud"),
       _createCard(Icons.card_giftcard, "Tarjeta de debito"),
       _createCard(Icons.transform_sharp, "Transacciones"),
     ],
@@ -30,30 +30,22 @@ Widget _createOperationTables() {
 }
 
 Widget _createCard(IconData icon, String label) {
-  return Center(
-    child: Container(
-      height: 250,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey),
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            icon,
-            size: 50,
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Text(
-            label,
+  return Container(
+    height: 500,
+    width: double.infinity,
+    decoration: BoxDecoration(
+      border: Border.all(color: Colors.grey),
+      borderRadius: BorderRadius.circular(5),
+    ),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(icon, size: 50, color: Colors.green),
+        SizedBox(height: 10),
+        Text(label,
             style: TextStyle(color: Colors.grey, fontSize: 12),
-          ),
-        ],
-      ),
+            textAlign: TextAlign.center),
+      ],
     ),
   );
 }

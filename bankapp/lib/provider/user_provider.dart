@@ -1,7 +1,4 @@
-import 'dart:convert';
-
-import 'package:bankapp/sharedPreferences/user_preferences.dart';
-import 'package:http/http.dart' as http;
+part of './provider.dart';
 
 class UserProvider {
   final _apiKey = 'AIzaSyBuGlcehF62wkLVodB_5dyHp5OGjegKlIo';

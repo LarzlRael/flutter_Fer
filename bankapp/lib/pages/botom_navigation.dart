@@ -1,8 +1,4 @@
-import 'package:bankapp/pages/operaciones_page.dart';
-import 'package:bankapp/pages/pagos.dart';
-import 'package:bankapp/pages/tarjeta_page.dart';
-import 'package:bankapp/pages/user_page.dart';
-import 'package:flutter/material.dart';
+part of 'pages.dart';
 
 class NavigationBottom extends StatefulWidget {
   @override
@@ -30,20 +26,25 @@ class _NavigationBottomState extends State<NavigationBottom> {
         return Pagos();
       case 3:
         return UserPage();
+      case 4:
+        return UserPage();
     }
   }
 
   _bottomNavigatorBar(BuildContext context) {
     return Theme(
       data: Theme.of(context).copyWith(
-        accentColor: Colors.pinkAccent,
         primaryColor: Colors.pinkAccent,
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           selectedItemColor: Color(
             0xff734583,
           ),
+          unselectedLabelStyle: TextStyle(
+            color: Colors.grey,
+            fontSize: 12,
+          ),
           unselectedIconTheme: IconThemeData(
-            size: 17,
+            size: 16,
           ),
           selectedIconTheme: IconThemeData(
             size: 18,
@@ -66,29 +67,11 @@ class _NavigationBottomState extends State<NavigationBottom> {
               icon: Icon(Icons.sticky_note_2_outlined), label: 'Operaciones'),
           BottomNavigationBarItem(icon: Icon(Icons.payment), label: 'Pagos'),
           BottomNavigationBarItem(
+              icon: Icon(Icons.key_outlined), label: 'Operaciones BNB'),
+          BottomNavigationBarItem(
               icon: Icon(Icons.person_outline), label: 'usuario'),
         ],
       ),
     );
   }
-
-  // Widget _bottomNavigatorBar2(BuildContext context) {
-  //   return BottomNavigationBar(
-  //     type: BottomNavigationBarType.fixed,
-  //     currentIndex: currentIndex,
-  //     onTap: (index) {
-  //       setState(() {
-  //         currentIndex = index;
-  //       });
-  //     },
-  //     items: [
-  //       BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
-  //       BottomNavigationBarItem(
-  //           icon: Icon(Icons.access_time), label: 'Operaciones'),
-  //       BottomNavigationBarItem(icon: Icon(Icons.payment), label: 'Pagos'),
-  //       BottomNavigationBarItem(
-  //           icon: Icon(Icons.verified_user), label: 'usuario'),
-  //     ],
-  //   );
-  // }
 }
